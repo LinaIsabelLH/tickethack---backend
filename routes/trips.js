@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
             departure: obj.departure,
             arrival: obj.arrival,
             time: moment.utc(obj.date).format('hh:mm'),
-            price: price
+            price:obj.price
           });
         }};
       
