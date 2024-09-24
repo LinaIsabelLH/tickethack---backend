@@ -19,15 +19,26 @@ router.post('/', (req, res) => {
 
 	Trip.find({ departure: { $regex: new RegExp(req.body.departure, 'i') }, arrival: { $regex: new RegExp(req.body.arrival, 'i')}})
   .then(data => {
-		if(data.length > 0){
+		if(data.length > 0) {
+      let tripsDate = []
       
       for( let obj of data){
-        if((moment(obj.date).format('DD-MM-YYYY')) === dateRec){
-          return res.json({ result: true, trip: data })
-        } else{
-          return res.json({ result: false, error: "Date not found for this trip" })
+        let dbDate = moment.utc(obj.date).format('DD-MM-YYYY');
+        console.log(dbDate, obj.date, dateRec);
+
+        if( dbDate === dateRec){
+          tripsDate.push(obj);
+          
         } 
-      }
+        
+      };
+      
+      if (tripsDate == []){
+        return res.json({ result: false, error: "Date not found for this trip" })
+        }
+        else {
+          return res.json({result: true, trips : tripsDate})
+        }
       
     }
     else {
