@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-require('../models/connection');
 const Trip = require('../models/trips');
 
 // GET Liste de tous les Trips disponibles
@@ -15,7 +14,7 @@ router.get('/', (req, res) => {
 // Selectionner un Trip : departure, arrival et date
 router.post('/', (req, res) => {
 	
-	Trip.findOne({ departure: { $regex: new RegExp(req.body.departure, 'i') }, arrival: { $regex: new RegExp(req.body.arrival, 'i') }, date:{ $regex: new RegExp(req.body.date, 'i') } })
+	Trip.findOne({ departure: { $regex: new RegExp(req.body.departure, 'i') }, arrival: { $regex: new RegExp(req.body.arrival, 'i') }, date: req.body.date })
   .then(data => {
 		if (data === null) {
       res.json({ result: false, error: "City not found" })
