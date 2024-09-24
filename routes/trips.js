@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const moment = require('moment');
 
 const Trip = require('../models/trips');
 
@@ -13,16 +14,26 @@ router.get('/', (req, res) => {
 
 // Selectionner un Trip : departure, arrival et date
 router.post('/', (req, res) => {
-	
-	Trip.find({ departure: { $regex: new RegExp(req.body.departure, 'i') }, arrival: { $regex: new RegExp(req.body.arrival, 'i') } })
+	let dateRec= moment(req.body.date).format('DD-MM-YYYY');
+ console.log(dateRec);
+
+	Trip.find({ departure: { $regex: new RegExp(req.body.departure, 'i') }, arrival: { $regex: new RegExp(req.body.arrival, 'i')}})
   .then(data => {
-		if (data === null) {
-      res.json({ result: false, error: "City not found" })
+		if(data.length > 0){
+      
+      for( let obj of data){
+        if((moment(obj.date).format('DD-MM-YYYY')) === dateRec){
+          return res.json({ result: true, trip: data })
+        } else{
+          return res.json({ result: false, error: "Date not found for this trip" })
+        } 
+      }
+      
     }
     else {
-      res.json({ result: true, trip: data })
+      return res.json({ result: false, error: "Trip not found" })
     }
-  });
-});
+  })
+}); 
 
 module.exports = router;
