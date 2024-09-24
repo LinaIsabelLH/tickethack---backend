@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
           tripsDate.push({
             departure: obj.departure,
             arrival: obj.arrival,
-            time: moment.utc(obj.date).format('hh:mm'),
+            time: moment.utc(obj.date).format('H:mm'),
             price:obj.price
           });
         }};
