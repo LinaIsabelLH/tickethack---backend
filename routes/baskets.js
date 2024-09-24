@@ -9,7 +9,7 @@ const Trip = require('../models/trips');
 router.post('/', (req, res) => {
     let dateRec= moment(req.body.date).format('DD-MM-YYYY, h:mm:ss a');
 
-	Trip.findOne({departure: { $regex: new RegExp(req.body.departure, 'i') }, arrival: { $regex: new RegExp(req.body.arrival, 'i')}})
+	Trip.find({departure: { $regex: new RegExp(req.body.departure, 'i') }, arrival: { $regex: new RegExp(req.body.arrival, 'i')}})
     .then(data => {
         if(data.length > 0) {
             let tripsDate = []

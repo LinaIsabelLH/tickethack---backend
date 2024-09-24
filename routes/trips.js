@@ -23,7 +23,12 @@ router.post('/', (req, res) => {
       for( let obj of data){
         let dbDate = moment.utc(obj.date).format('DD-MM-YYYY');
         if( dbDate === dateRec){
-          tripsDate.push(obj);
+          tripsDate.push({
+            departure: obj.departure,
+            arrival: obj.arrival,
+            time: moment.utc(obj.date).format('hh:mm'),
+            price: price
+          });
         }};
       
       if (tripsDate == []){
