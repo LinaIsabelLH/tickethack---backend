@@ -16,13 +16,15 @@ router.post('/', (req, res) => {
     })
     newBook.save()}})
     .then(()=>{
-      Booking.find()
-      .populate('tripsId')
-      .then(data =>{
-        res.json({ result: true, basket: 'Added to my bookings', MyBookings: data })
+        Booking.find()
+        .populate('tripsId')
+        .then(dataBooking =>{
+          Basket.deleteMany().then(()=>{
+            res.json({result: true, message: 'The basket deleted et added to my bookings', MyBookings: dataBooking})
+          })})
+          })    
     })
-    })
-    }) 
+
 
 
 //Liste My Bookings
