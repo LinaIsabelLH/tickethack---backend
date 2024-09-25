@@ -8,23 +8,17 @@ const Basket = require('../models/baskets');
 //Récuperer les trips suite au click "Book"
 
 router.post('/:tripId', (req, res) => {
+        const newTripBasket = new Basket({
+        tripsId: req.params.tripId })
 
-	Trip.findOne({_id: req.params.tripId })
-    .then(data => {
-        if(data){
-          const newTripBasket = new Basket({
-          tripsId: req.params.tripId, 
-          time: moment.utc(data.date).format('H:mm'),
-        })
         newTripBasket.save().then(newDoc => {
         res.json({ result: true, tripsbasket: newDoc });
         });           
-        }
-        else {
-            return res.json({ result: false, tripsBasket: "No tickets in your card" })
-          }})
-        }); 
+        })
 
+//Liste des Trips sur la page basket*
+
+router.get('')
 
 //Delete the trip from the basket
 router.delete("/:tripId", (req, res) => {
