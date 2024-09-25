@@ -7,13 +7,22 @@ const Basket = require('../models/baskets');
 const Booking = require('../models/bookings');
 
 //After clicking "purchase" in the basket page
-router.post('/:tripId', (req, res) => {
-  const newBook = new Booking({
-  tripsId: req.params.tripId 
-})
-  newBook.save().then(() => 
-  res.json({ result: true, book: 'Added to my bookings'}));
-  });
+router.post('/', (req, res) => {
+  Basket.find()
+  .then(data =>{
+    for (const basket of data) {
+      const newBook = new Booking({
+      tripsId: basket.tripsId
+    })
+    newBook.save()}})
+    .then(()=>{
+      Booking.find()
+      .populate('tripsId')
+      .then(data =>{
+        res.json({ result: true, basket: 'Added to my bookings', MyBookings: data })
+    })
+    })
+    }) 
 
 
 //Liste My Bookings
