@@ -34,16 +34,18 @@ router.get('/', (req, res) =>{
 
 //Delete the trip from the basket
 router.delete("/:tripId", (req, res) => {
-   
     Basket.deleteOne({_id: req.params.tripId })
     .then(dataDeleted => {
-            Basket.find()
-            .populate('tripsId')
-            .then(data => {
-              res.json({ result: true, tripsBasket: data });
-            });
-          }) ;
-          });
+        Basket.find()
+        .populate('tripsId')
+        .then(data => {
+            let total = 0; 
+            for(let i = 0; i<data.length; i++){
+            let prices = data[i].tripsId.price;
+                total += prices 
+            }
+            return res.json({result: true, basket: data, totalPriceBasket: total})
+            })})})
  
 
 module.exports = router;
