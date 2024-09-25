@@ -11,10 +11,10 @@ router.post('/:tripId', (req, res) => {
         const newTripBasket = new Basket({
         tripsId: req.params.tripId })
 
-        newTripBasket.save().then(newDoc => {
-        res.json({ result: true, tripsbasket: newDoc });
-        });           
-        })
+        newTripBasket.save().then(() => {
+        res.json({ result: true, reservation: 'Trip added to the basket'});
+        })         
+        });
 
 //Liste des Trips sur la page basket*
 
@@ -25,7 +25,7 @@ router.get('/', (req, res) =>{
         res.json({result: true, basket: data})
        })
 
-})
+});
 
 //Delete the trip from the basket
 router.delete("/:tripId", (req, res) => {
