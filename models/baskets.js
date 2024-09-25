@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const basketSchema = mongoose.Schema({
-	tripsId: [{type: mongoose.Schema.Types.ObjectId, ref:'trips'}],
+    tripsId: [{type: mongoose.Schema.Types.ObjectId, ref:'trips'}],
     user :{type: mongoose.Schema.Types.ObjectId, ref:'users'},
 	
 });
