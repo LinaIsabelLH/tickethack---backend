@@ -31,9 +31,27 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) =>{
   Booking.find()
   .populate('tripsId')
+  .lean()
   .then(data =>{
-   res.json({result: true, myBookings: data})
-  })
+    if (data.length > 0) {
+      const tripsBooking = data.map((obj) => {
+        return {
+          ...obj,
+          time: moment(obj.date).fromNow()
+        };
+      })
+        if (tripsBooking == []) {
+        return res.json({
+          result: false,
+          error: 'No bookings',
+        });
+        } else {
+        return res.json({ result: true, trips: tripsBooking });
+        }
+    }
+    else {
+      return res.json({ result: false, error: 'Trip not found' });
+  }})
 });
 
 //Effacer les bookings passés
