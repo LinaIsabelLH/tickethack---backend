@@ -18,14 +18,23 @@ router.post('/:tripId', (req, res) => {
 
 //Liste des Trips sur la page basket*
 
-router.get('')
+router.get('/', (req, res) =>{
+       Basket.find()
+       .populate('tripsId')
+       .then(data =>{
+        res.json({result: true, basket: data})
+       })
+
+})
 
 //Delete the trip from the basket
 router.delete("/:tripId", (req, res) => {
    
     Basket.deleteOne({_id: req.params.tripId })
     .then(dataDeleted => {
-            Basket.find().then(data => {
+            Basket.find()
+            .populate('tripsId')
+            .then(data => {
               res.json({ result: true, tripsBasket: data });
             });
           }) ;
