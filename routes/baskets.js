@@ -7,52 +7,36 @@ const Basket = require('../models/baskets');
 
 //Récuperer les trips suite au click "Book"
 
-router.post('/', (req, res) => {
-    let date = req.body.date;
-    let time = req.body.time;
-    let dateRec= moment(`${date} ${time}`).format('YYYY-MM-DD H:mm');
+router.post('/:tripId', (req, res) => {
 
-	Trip.findOne({departure: { $regex: new RegExp(req.body.departure, 'i') }, arrival: { $regex: new RegExp(req.body.arrival, 'i')}, date: { $gte: dateRec.startOf("minute").toDate(),
-        $lt: dateRec.endOf("minute").toDate()} })
+	Trip.findOne({_id: req.params.tripId })
     .then(data => {
-        console.log(data);
-        if(data) {
+        if(data){
           const newTripBasket = new Basket({
-          departure: obj.departure,
-          arrival: obj.arrival,
-          time: moment.utc(obj.date).format('H:mm'),
-          price: obj.price
+          tripsId: req.params.tripId, 
+          time: moment.utc(data.date).format('H:mm'),
+          user: 'Lina'
         })
         newTripBasket.save().then(newDoc => {
-        res.json({ result: true, trips: newDoc });
+        res.json({ result: true, tripsbasket: newDoc });
         });           
         }
         else {
-            return res.json({ result: false, error: "No tickets in your card" })
-          }
-        })
-      }); 
+            return res.json({ result: false, tripsBasket: "No tickets in your card" })
+          }})
+        }); 
 
 
 //Delete the trip from the basket
-router.delete("/", (req, res) => {
-    let dateRec= moment(req.body.date).format('DD-MM-YYYY, H:mm:ss');
-
-    Basket.find({departure: { $regex: new RegExp(req.body.departure, 'i') }, arrival: { $regex: new RegExp(req.body.arrival, 'i')}})
-    .then(data => {
-        if(data.length > 0) {
-            
-            for( let obj of data){
-              let dbDate = moment.utc(obj.date).format('DD-MM-YYYY, H:mm:ss');
-              if( dbDate === dateRec){
-                Basket.deleteOne({_id: obj._id }).then(deletedDoc => {
-                Basket.find().then(data => {
-              res.json({ result: true, trips: data });
+router.delete("/:tripId", (req, res) => {
+   
+    Basket.deleteOne({_id: req.params.tripId })
+    .then(dataDeleted => {
+            Basket.find().then(data => {
+              res.json({ result: true, tripsBasket: data });
             });
           }) ;
-          }}}});
-        })
+          });
  
-
 
 module.exports = router;
