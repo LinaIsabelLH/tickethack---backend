@@ -17,15 +17,20 @@ router.post('/:tripId', (req, res) => {
         });
 
 //Liste des Trips sur la page basket*
-
 router.get('/', (req, res) =>{
        Basket.find()
        .populate('tripsId')
+       .lean()
        .then(data =>{
-        res.json({result: true, basket: data})
+        let total = 0; 
+        for(let i = 0; i<data.length; i++){
+           let prices = data[i].tripsId.price;
+           total += prices
+            }
+            return res.json({result: true, basket: data, totalPriceBasket: total})
+        }) 
        })
 
-});
 
 //Delete the trip from the basket
 router.delete("/:tripId", (req, res) => {
