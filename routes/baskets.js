@@ -15,7 +15,6 @@ router.post('/:tripId', (req, res) => {
           const newTripBasket = new Basket({
           tripsId: req.params.tripId, 
           time: moment.utc(data.date).format('H:mm'),
-          user: 'Lina'
         })
         newTripBasket.save().then(newDoc => {
         res.json({ result: true, tripsbasket: newDoc });
