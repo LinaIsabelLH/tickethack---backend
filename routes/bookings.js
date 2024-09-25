@@ -23,8 +23,19 @@ router.get('/', (req, res) =>{
   .then(data =>{
    res.json({result: true, myBookings: data})
   })
-
 });
+
+//Effacer les bookings passés
+router.delete('/', (req, res) =>{
+  Booking.deleteMany().then(data =>{
+    res.json({result: true, message: 'My Bookings have been deleted'})
+  })
+});
+
+
+
+
+
 
 
 module.exports = router;

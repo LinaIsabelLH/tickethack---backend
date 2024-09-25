@@ -10,7 +10,7 @@ const Basket = require('../models/baskets');
 router.post('/:tripId', (req, res) => {
         const newTripBasket = new Basket({
         tripsId: req.params.tripId })
-
+        
         newTripBasket.save().then(() => {
         res.json({ result: true, reservation: 'Trip added to the basket'});
         })         
